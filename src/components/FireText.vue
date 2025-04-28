@@ -13,7 +13,7 @@ export default {
   props: {
     text: {
       type: String,
-      default: 'nrrb'
+      default: 'LOVE'
     },
     fontSize: {
       type: Number,
@@ -367,6 +367,25 @@ export default {
 
       // Render text on top
       this.renderText();
+
+      // Draw tagline text in top left
+      const taglineText = 'A new kind of bold.';
+      const emoji = '🔥';
+      const taglineFontSize = this.fontSize * this.pixelSize / 4;
+      const margin = this.pixelSize * 2;
+
+      // Draw text directly on main canvas
+      this.ctx.font = `bold ${taglineFontSize}px ${this.fontFamily}`;
+      this.ctx.textBaseline = 'top';
+
+      // Draw white text
+      this.ctx.fillStyle = 'white';
+      this.ctx.fillText(taglineText, margin, margin);
+
+      // Draw emoji in original color
+      const textWidth = this.ctx.measureText(taglineText + ' ').width;
+      this.ctx.fillStyle = '#000'; // Reset to black to get original emoji color
+      this.ctx.fillText(emoji, margin + textWidth, margin);
 
       // Continue animation
       this.animationId = requestAnimationFrame(this.animate);
