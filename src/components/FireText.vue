@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { createNoise2D } from 'simplex-noise';
+
 export default {
   name: 'FireText',
 
@@ -44,7 +46,9 @@ export default {
       ctx: null,
       animationId: null,
       textEdgePixels: [],
-      palette: []
+      palette: [],
+      noise2D: createNoise2D(),
+      frame: 0
     }
   },
 
@@ -318,8 +322,8 @@ export default {
 
     renderText() {
       // Draw text directly using the fire source positions
-      this.ctx.fillStyle = 'white';
-      
+      this.ctx.fillStyle = 'black';
+
       // Draw a white block for each fire source pixel
       this.textEdgePixels.forEach(({ x, y }) => {
         if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
@@ -334,12 +338,28 @@ export default {
     },
 
     animate() {
-      // Re-seed the fire source pixels
+      // Re-seed the fire source pixels with Perlin noise
       this.textEdgePixels.forEach(({ x, y }) => {
         if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
-          this.fireBuffer[y * this.width + x] = this.intensity;
+          // Scale coordinates and time for smoother noise
+          const nx = x * 0.1;
+          const ny = y * 0.1;
+          const nt = this.frame * 0.02;
+
+          // Generate noise value between -1 and 1
+          const noiseValue = this.noise2D(nx + nt, ny);
+
+          // Convert to fire intensity (0-255)
+          const fireIntensity = Math.floor(
+            this.intensity * (0.8 + 0.2 * noiseValue)
+          );
+
+          this.fireBuffer[y * this.width + x] = Math.max(0, Math.min(255, fireIntensity));
         }
       });
+
+      // Update frame counter
+      this.frame++;
 
       // Update and render fire
       this.updateFire();

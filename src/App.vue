@@ -1,12 +1,12 @@
 <template>
   <div class="app">
     <FireText
-      text="nrrb"
-      :fontSize="30"
+      text="LOVE"
+      :fontSize="15"
       fontFamily="'Arial Black', Gadget, sans-serif"
       :intensity="255"
-      :cooling="1"
-      :spreadRate="10"
+      :cooling="5"
+      :spreadRate="3"
     />
   </div>
 </template>
