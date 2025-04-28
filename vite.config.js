@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => ({
     vue(),
     vueDevTools(),
   ],
-  base: mode === 'production' ? '/voxelfire/' : '/',
+  base: mode === 'production' ? '/burningtext/' : '/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
